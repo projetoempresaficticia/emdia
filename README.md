@@ -3,7 +3,7 @@
 Cobranças recorrentes — água, energia, internet, telecom, renda (Prepara Portugal)
 
 **Status:** em construção.
-**Depende de:** pp-base, pp-identidade, pp-banco, pp-correio, pp-orgaos
+**Depende de:** pp-base, pp-identidade, prepacoin, pp-correio, pp-orgaos
 
 Documentação completa (PRDs e decisões) em
 [prepara-portugal-docs](https://github.com/projetoempresaficticia/prepara-portugal-docs).
