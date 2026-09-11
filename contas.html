@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="emdia-versao" content="05e1909245cc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contas — EmDia</title>
+  <meta name="description" content="Todas as suas contas, num só lugar." />
+  <link rel="icon" href="favicon-32.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="web/biblioteca/emdia.css?v=00eb136d" />
+</head>
+<body>
+
+<div class="ed-a-verificar" id="a-verificar"><p class="ed-vazio">A verificar sessão…</p></div>
+<div class="ed-entrada" id="entrada" hidden>
+  <div class="ed-entrada-cartao">
+    <div class="ed-entrada-marca">
+      <img src="web/marca/emdia-marca.png" alt="" />
+      <div><b>EmDia</b><small>Entrar</small></div>
+    </div>
+    <form id="form-login">
+      <div class="ed-campo">
+        <label for="email">Email de login</label>
+        <input id="email" name="email" type="email" required autocomplete="username" placeholder="nome@prepara.pt" />
+      </div>
+      <div class="ed-campo ed-campo-senha" style="margin:0">
+        <label for="senha">Senha</label>
+        <input id="senha" name="senha" type="password" required autocomplete="current-password" placeholder="A sua senha" />
+        <button type="button" class="ed-ver-senha" id="btn-ver-senha" aria-pressed="false" aria-controls="senha">Mostrar</button>
+      </div>
+      <p class="ed-msg" style="margin-top:var(--ed-e3)"></p>
+      <button type="submit" class="ed-botao ed-botao-primario" style="width:100%;margin-top:var(--ed-e4)">Entrar</button>
+    </form>
+  </div>
+</div>
+
+<div class="ed-pagina" id="painel" hidden style="padding-bottom:88px">
+  <header id="topo"></header>
+  <main class="ed-env" style="max-width:720px;padding-top:var(--ed-e5)">
+    <h1 class="ed-h1" style="margin-bottom:var(--ed-e4)">Contas</h1>
+    <div class="ed-segmentado" id="segmentado" style="margin-bottom:var(--ed-e4)">
+      <button type="button" data-filtro="todas" aria-current="true">Todas</button>
+      <button type="button" data-filtro="pendentes">Pendentes</button>
+      <button type="button" data-filtro="pagas">Pagas</button>
+    </div>
+    <div class="ed-cartao" id="lista-contas"><p class="ed-vazio">A carregar…</p></div>
+  </main>
+</div>
+
+<nav id="nav-inferior" style="position:fixed;bottom:0;left:0;right:0"></nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://projetoempresaficticia.github.io/pp-base/web/comum.js"></script>
+<script src="web/biblioteca/emdia.js?v=218b440d"></script>
+<script src="web/atualizar.js?v=4f2f0b42"></script>
+<script src="app-contas.js?v=b501595b"></script>
+<script src="contas.js?v=aea84d9a"></script>
+</body>
+</html>

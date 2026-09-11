@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="emdia-versao" content="05e1909245cc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EmDia</title>
+  <meta name="description" content="Suas contas em dia." />
+  <link rel="icon" href="favicon-32.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="web/biblioteca/emdia.css?v=00eb136d" />
+</head>
+<body>
+
+<div class="ed-a-verificar" id="a-verificar"><p class="ed-vazio">A verificar sessão…</p></div>
+
+<div class="ed-entrada" id="entrada" hidden>
+  <div class="ed-entrada-cartao">
+    <div class="ed-entrada-marca">
+      <img src="web/marca/emdia-marca.png" alt="" />
+      <div><b>EmDia</b><small>Entrar</small></div>
+    </div>
+    <form id="form-login">
+      <div class="ed-campo">
+        <label for="email">Email de login</label>
+        <input id="email" name="email" type="email" required autocomplete="username" placeholder="nome@prepara.pt" />
+      </div>
+      <div class="ed-campo ed-campo-senha" style="margin:0">
+        <label for="senha">Senha</label>
+        <input id="senha" name="senha" type="password" required autocomplete="current-password" placeholder="A sua senha" />
+        <button type="button" class="ed-ver-senha" id="btn-ver-senha" aria-pressed="false" aria-controls="senha">Mostrar</button>
+      </div>
+      <p class="ed-msg" style="margin-top:var(--ed-e3)"></p>
+      <button type="submit" class="ed-botao ed-botao-primario" style="width:100%;margin-top:var(--ed-e4)">Entrar</button>
+    </form>
+  </div>
+</div>
+
+<div class="ed-pagina" id="painel" hidden style="padding-bottom:88px">
+  <header id="topo"></header>
+
+  <main class="ed-env" style="max-width:720px;padding-top:var(--ed-e5)">
+    <p class="ed-caption" id="saudacao-hora">Olá,</p>
+    <h1 class="ed-display" id="saudacao-nome" style="margin-bottom:var(--ed-e5)">Bom dia!</h1>
+
+    <div class="ed-cartao" style="margin-bottom:var(--ed-e4)">
+      <p class="bib-tipo-rotulo" style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ed-texto-suave);margin-bottom:10px">Total a pagar</p>
+      <p class="ed-display" id="total-a-pagar">€ 0,00</p>
+      <p class="ed-caption" id="resumo-contagem"></p>
+    </div>
+
+    <div id="proxima-conta"></div>
+
+    <div class="ed-fila" style="justify-content:space-between;margin:var(--ed-e5) 0 var(--ed-e3)">
+      <h2 class="ed-h2">Minhas contas</h2>
+      <a href="contas.html" class="ed-botao ed-botao-terciario ed-botao-pequeno">Ver todas<span class="ed-icone ed-icone-16 i-seta-direita" aria-hidden="true"></span></a>
+    </div>
+    <div class="ed-cartao" id="lista-recente"><p class="ed-vazio">A carregar…</p></div>
+  </main>
+</div>
+
+<nav id="nav-inferior" style="position:fixed;bottom:0;left:0;right:0"></nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://projetoempresaficticia.github.io/pp-base/web/comum.js"></script>
+<script src="web/biblioteca/emdia.js?v=218b440d"></script>
+<script src="web/atualizar.js?v=4f2f0b42"></script>
+<script src="app-contas.js?v=b501595b"></script>
+<script src="index.js?v=975a0e0d"></script>
+</body>
+</html>

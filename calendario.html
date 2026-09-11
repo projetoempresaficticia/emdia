@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="emdia-versao" content="05e1909245cc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calendário — EmDia</title>
+  <meta name="description" content="Os dias em que as suas contas vencem." />
+  <link rel="icon" href="favicon-32.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="web/biblioteca/emdia.css?v=00eb136d" />
+  <style>
+    .cal-grelha { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .cal-cabeca { text-align: center; font: 600 11px/1 var(--ed-fonte); color: var(--ed-texto-suave); padding-bottom: 8px; }
+    .cal-dia {
+      aspect-ratio: 1; border-radius: var(--ed-r-sm); background: var(--ed-superficie);
+      border: 1px solid var(--ed-borda); display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 3px; cursor: pointer; font: 500 13px/1 var(--ed-fonte); color: var(--ed-texto);
+      position: relative;
+    }
+    .cal-dia:hover { border-color: var(--ed-primario-claro); }
+    .cal-dia.vazio { background: transparent; border-color: transparent; cursor: default; }
+    .cal-dia.hoje { border-color: var(--ed-primario-claro); }
+    .cal-dia.selecionado { background: var(--ed-primario-botao); color: #fff; border-color: var(--ed-primario-botao); }
+    .cal-dia .marca { width: 5px; height: 5px; border-radius: 50%; background: var(--ed-aviso); }
+    .cal-dia.selecionado .marca { background: #fff; }
+  </style>
+</head>
+<body>
+
+<div class="ed-a-verificar" id="a-verificar"><p class="ed-vazio">A verificar sessão…</p></div>
+<div class="ed-entrada" id="entrada" hidden>
+  <div class="ed-entrada-cartao">
+    <div class="ed-entrada-marca">
+      <img src="web/marca/emdia-marca.png" alt="" />
+      <div><b>EmDia</b><small>Entrar</small></div>
+    </div>
+    <form id="form-login">
+      <div class="ed-campo">
+        <label for="email">Email de login</label>
+        <input id="email" name="email" type="email" required autocomplete="username" placeholder="nome@prepara.pt" />
+      </div>
+      <div class="ed-campo ed-campo-senha" style="margin:0">
+        <label for="senha">Senha</label>
+        <input id="senha" name="senha" type="password" required autocomplete="current-password" placeholder="A sua senha" />
+        <button type="button" class="ed-ver-senha" id="btn-ver-senha" aria-pressed="false" aria-controls="senha">Mostrar</button>
+      </div>
+      <p class="ed-msg" style="margin-top:var(--ed-e3)"></p>
+      <button type="submit" class="ed-botao ed-botao-primario" style="width:100%;margin-top:var(--ed-e4)">Entrar</button>
+    </form>
+  </div>
+</div>
+
+<div class="ed-pagina" id="painel" hidden style="padding-bottom:88px">
+  <header id="topo"></header>
+  <main class="ed-env" style="max-width:560px;padding-top:var(--ed-e5)">
+    <div class="ed-fila" style="justify-content:space-between;margin-bottom:var(--ed-e4)">
+      <button type="button" class="ed-botao-icone" id="mes-anterior" style="background:transparent;color:var(--ed-texto)" aria-label="Mês anterior">
+        <span class="ed-icone i-seta-direita" style="transform:scaleX(-1)" aria-hidden="true"></span>
+      </button>
+      <h1 class="ed-h1" id="mes-titulo">—</h1>
+      <button type="button" class="ed-botao-icone" id="mes-seguinte" style="background:transparent;color:var(--ed-texto)" aria-label="Mês seguinte">
+        <span class="ed-icone i-seta-direita" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <div class="cal-grelha" id="cal-cabecas"></div>
+    <div class="cal-grelha" id="cal-grelha" style="margin-top:8px"></div>
+
+    <h2 class="ed-h2" style="margin:var(--ed-e5) 0 var(--ed-e3)" id="dia-titulo">Hoje</h2>
+    <div class="ed-cartao" id="dia-contas"><p class="ed-vazio">Sem contas neste dia.</p></div>
+  </main>
+</div>
+
+<nav id="nav-inferior" style="position:fixed;bottom:0;left:0;right:0"></nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://projetoempresaficticia.github.io/pp-base/web/comum.js"></script>
+<script src="web/biblioteca/emdia.js?v=218b440d"></script>
+<script src="web/atualizar.js?v=4f2f0b42"></script>
+<script src="app-contas.js?v=b501595b"></script>
+<script src="calendario.js?v=d36e7a9d"></script>
+</body>
+</html>

@@ -86,6 +86,7 @@ a { color: inherit; }
 .i-verificar     { --i: url(../icones/verificar.svg); }
 .i-menu          { --i: url(../icones/menu.svg); }
 .i-lixo          { --i: url(../icones/lixo.svg); }
+.i-recibo        { --i: url(../icones/recibo.svg); }
 
 /* ── botões ───────────────────────────────────────────────────────────── */
 .ed-botao {
@@ -206,6 +207,15 @@ a { color: inherit; }
 }
 .ed-barra-mensal .col span { font-size: 11px; color: var(--ed-texto-suave); }
 
+/* ── tabela ───────────────────────────────────────────────────────────── */
+.ed-tabela-envolt { overflow-x: auto; border: 1px solid var(--ed-borda); border-radius: var(--ed-r-lg); }
+table.ed-tabela { width: 100%; border-collapse: collapse; background: var(--ed-superficie); font-size: 13.5px; }
+.ed-tabela th {
+  text-align: left; padding: 10px 14px; background: var(--ed-superficie-elevada);
+  font: 600 11px/1 var(--ed-fonte); letter-spacing: .04em; text-transform: uppercase; color: var(--ed-texto-suave);
+}
+.ed-tabela td { padding: 12px 14px; border-top: 1px solid var(--ed-borda); vertical-align: top; }
+
 /* ── navegação ────────────────────────────────────────────────────────── */
 .ed-topo {
   background: var(--ed-superficie); border-bottom: 1px solid var(--ed-borda);
@@ -255,7 +265,52 @@ a { color: inherit; }
   background: var(--ed-superficie-elevada); border-radius: var(--ed-r-lg); border: 1px solid var(--ed-borda);
   padding: var(--ed-e4); box-shadow: var(--ed-sombra-alta); max-width: 340px;
 }
+
+/* ── <dialog> a sério (modal de pagamento, etc.) ─────────────────────── */
+dialog {
+  border: 0; border-radius: var(--ed-r-lg); padding: var(--ed-e4);
+  max-width: 360px; width: calc(100% - var(--ed-e5) * 2);
+  background: var(--ed-superficie-elevada); border: 1px solid var(--ed-borda);
+  color: var(--ed-texto); box-shadow: var(--ed-sombra-alta);
+}
+dialog::backdrop { background: rgba(0,0,0,.6); }
+.ed-msg { font: 500 13.5px/1.4 var(--ed-fonte); min-height: 1px; }
+.ed-msg-erro { color: var(--ed-erro); }
+.ed-msg-ok { color: var(--ed-sucesso); }
 .ed-notificacao {
   display: flex; gap: 10px; padding: var(--ed-e3); background: var(--ed-superficie);
   border: 1px solid var(--ed-borda); border-radius: var(--ed-r);
+}
+
+/* ── entrada (login) ─────────────────────────────────────────────────── */
+.ed-a-verificar { min-height: 100svh; display: flex; align-items: center; justify-content: center; }
+.ed-entrada {
+  position: relative; min-height: 100svh; display: flex; align-items: center; justify-content: center;
+  padding: clamp(24px, 5vh, 64px) clamp(16px, 4vw, 56px);
+  background: var(--ed-fundo) url('../marca/fundo-entrada.webp') center/cover no-repeat;
+}
+.ed-entrada::before {
+  content: ''; position: absolute; inset: 0; background: rgba(17,16,31,.55);
+}
+.ed-entrada-cartao {
+  position: relative; width: 100%; max-width: 400px;
+  background: var(--ed-superficie-elevada); border: 1px solid var(--ed-borda);
+  border-radius: var(--ed-r-lg); padding: clamp(24px, 4vh, 34px); box-shadow: var(--ed-sombra-alta);
+}
+.ed-entrada-marca { display: flex; align-items: center; gap: var(--ed-e3); margin-bottom: clamp(16px, 3vh, 24px); }
+.ed-entrada-marca img { width: 44px; height: 44px; }
+.ed-entrada-marca b { font-family: var(--ed-display); font-size: 20px; }
+.ed-entrada-marca small { display: block; font-weight: 400; font-size: 12.5px; color: var(--ed-texto-suave); margin-top: 2px; }
+.ed-campo-senha { position: relative; }
+.ed-campo-senha input { padding-right: 96px; }
+.ed-ver-senha {
+  position: absolute; right: 6px; bottom: 6px; height: 32px; padding: 0 11px;
+  border: 0; border-radius: 9px; background: transparent; color: var(--ed-primario-claro);
+  font: 500 13px/1 var(--ed-fonte); cursor: pointer;
+}
+.ed-ver-senha:hover { background: rgba(145,173,255,.1); }
+
+@media (max-width: 640px) {
+  .ed-entrada { background-image: none; }
+  .ed-entrada::before { display: none; }
 }

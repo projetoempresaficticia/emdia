@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="emdia-versao" content="05e1909245cc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel da professora — EmDia</title>
+  <meta name="description" content="Emitir o ciclo de faturação e acompanhar quem já pagou." />
+  <link rel="icon" href="favicon-32.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="web/biblioteca/emdia.css?v=00eb136d" />
+</head>
+<body>
+
+<div class="ed-a-verificar" id="a-verificar"><p class="ed-vazio">A verificar sessão…</p></div>
+<div class="ed-entrada" id="entrada" hidden>
+  <div class="ed-entrada-cartao">
+    <div class="ed-entrada-marca">
+      <img src="web/marca/emdia-marca.png" alt="" />
+      <div><b>EmDia</b><small>Área da professora</small></div>
+    </div>
+    <form id="form-login">
+      <div class="ed-campo">
+        <label for="email">Email de login</label>
+        <input id="email" name="email" type="email" required autocomplete="username" placeholder="nome@prepara.pt" />
+      </div>
+      <div class="ed-campo ed-campo-senha" style="margin:0">
+        <label for="senha">Senha</label>
+        <input id="senha" name="senha" type="password" required autocomplete="current-password" placeholder="A sua senha" />
+        <button type="button" class="ed-ver-senha" id="btn-ver-senha" aria-pressed="false" aria-controls="senha">Mostrar</button>
+      </div>
+      <p class="ed-msg" style="margin-top:var(--ed-e3)"></p>
+      <button type="submit" class="ed-botao ed-botao-primario" style="width:100%;margin-top:var(--ed-e4)">Entrar</button>
+    </form>
+  </div>
+</div>
+
+<div class="ed-pagina" id="painel" hidden>
+  <header id="topo"></header>
+  <main class="ed-env" style="max-width:820px;padding-top:var(--ed-e5);padding-bottom:64px">
+    <h1 class="ed-h1" style="margin-bottom:var(--ed-e2)">Painel da professora</h1>
+    <p class="ed-suave" style="margin-bottom:var(--ed-e5)">Emitir o ciclo de faturação e acompanhar quem já pagou.</p>
+
+    <div class="ed-cartao" style="margin-bottom:var(--ed-e5)">
+      <h2 class="ed-h2" style="margin-bottom:var(--ed-e4)">Emitir ciclo</h2>
+      <form id="form-emitir">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--ed-e4)">
+          <div class="ed-campo" style="margin:0">
+            <label for="e-servico">Serviço</label>
+            <select id="e-servico" required>
+              <option value="">Selecione</option>
+              <option value="agua">Água</option>
+              <option value="energia">Energia</option>
+              <option value="internet">Internet</option>
+              <option value="telecom">Telecom</option>
+              <option value="renda">Aluguel</option>
+            </select>
+          </div>
+          <div class="ed-campo" style="margin:0">
+            <label for="e-ciclo">Ciclo</label>
+            <input id="e-ciclo" placeholder="Ex.: 2026-C2" required />
+          </div>
+          <div class="ed-campo" style="margin:0">
+            <label for="e-prazo">Prazo (dias)</label>
+            <input id="e-prazo" type="number" min="1" max="365" value="15" required />
+          </div>
+        </div>
+        <p class="ed-msg" id="msg-emitir" style="margin-top:var(--ed-e2)"></p>
+        <button type="submit" class="ed-botao ed-botao-primario" style="margin-top:var(--ed-e3)">Emitir para todas as empresas</button>
+      </form>
+    </div>
+
+    <div class="ed-cartao" style="margin-bottom:var(--ed-e5)">
+      <h2 class="ed-h2" style="margin-bottom:var(--ed-e4)">Aplicar multas por atraso</h2>
+      <form id="form-multas">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--ed-e4)">
+          <div class="ed-campo" style="margin:0">
+            <label for="m-servico">Serviço</label>
+            <select id="m-servico" required>
+              <option value="">Selecione</option>
+              <option value="agua">Água</option>
+              <option value="energia">Energia</option>
+              <option value="internet">Internet</option>
+              <option value="telecom">Telecom</option>
+              <option value="renda">Aluguel</option>
+            </select>
+          </div>
+          <div class="ed-campo" style="margin:0">
+            <label for="m-ciclo">Ciclo</label>
+            <input id="m-ciclo" placeholder="Ex.: 2026-C1" required />
+          </div>
+          <div class="ed-campo" style="margin:0">
+            <label for="m-valor">Valor da multa (€)</label>
+            <input id="m-valor" type="number" min="0.01" step="0.01" value="5.00" required />
+          </div>
+        </div>
+        <p class="ed-msg" id="msg-multas" style="margin-top:var(--ed-e2)"></p>
+        <button type="submit" class="ed-botao ed-botao-perigoso" style="margin-top:var(--ed-e3)">Aplicar multas às faturas vencidas</button>
+      </form>
+    </div>
+
+    <h2 class="ed-h2" style="margin-bottom:var(--ed-e4)">Resumo por ciclo</h2>
+    <div id="lista-resumo"><p class="ed-vazio">A carregar…</p></div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://projetoempresaficticia.github.io/pp-base/web/comum.js"></script>
+<script src="web/biblioteca/emdia.js?v=218b440d"></script>
+<script src="web/atualizar.js?v=4f2f0b42"></script>
+<script src="professor.js?v=3837a712"></script>
+</body>
+</html>
