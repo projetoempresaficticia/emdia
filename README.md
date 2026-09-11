@@ -2,8 +2,8 @@
 
 Cobranças recorrentes — água, energia, internet, telecom, renda (Prepara Portugal)
 
-**Status:** backend pronto e testado com SQL real. Identidade visual e
-biblioteca (`biblioteca.html`) prontas. Frontend da app por fazer.
+**Status:** backend, identidade visual e app completos, testados com SQL
+real e Puppeteer.
 **Depende de:** pp-base, pp-identidade, pp-banco, pp-correio, pp-orgaos
 
 Documentação completa (PRDs e decisões) em
@@ -36,10 +36,18 @@ templates. Duas correções de contraste medidas (WCAG real) documentadas
 na própria página: `--ed-primario-botao` (texto branco sobre botão
 sólido) e `--ed-texto-em-selo` (selos cheios).
 
+## App
+
+- **Empresa:** `index.html` (dashboard), `contas.html` (lista com filtro
+  Todas/Pendentes/Pagas), `calendario.html` (mês a mês, dias com conta
+  marcados), `perfil.html`. Pagar é sempre `banco_pagar_referencia` — o
+  mesmo botão que já usam para AT/Segurança Social.
+- **Professora:** `professor.html` — emitir ciclo, aplicar multas por
+  atraso, e um resumo por serviço+ciclo com progresso e tabela por
+  empresa (`sql/003_frontend_rpcs.sql`).
+
 ## Por fazer
 
-- Frontend da app (dashboard, lista de contas, calendário, perfil) — a
-  biblioteca já tem os componentes prontos para compor.
 - Agendamento automático do ciclo (Supabase scheduled function / GitHub
   Action) — por agora, `util_emitir_ciclo`/`util_aplicar_multas` chamam-se
   à mão pela professora.
