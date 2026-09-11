@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="emdia-versao" content="6bbaf1d4d84c" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biblioteca — EmDia</title>
+  <meta name="description" content="Referência de identidade visual: cores, tipografia e componentes." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="favicon-32.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="web/biblioteca/emdia.css?v=400d2dfa" />
+  <style>
+    /* só desta página — não faz parte do sistema de desenho da app */
+    .bib-secao { padding: 40px 0; border-top: 1px solid var(--ed-borda); }
+    .bib-secao:first-of-type { border-top: 0; }
+    .bib-titulo-secao { display: flex; align-items: baseline; gap: 12px; margin-bottom: 24px; }
+    .bib-num { font-family: var(--ed-display); font-size: 15px; color: var(--ed-primario-claro); font-weight: 700; }
+    .bib-titulo-secao h2 { margin: 0; }
+    .bib-sub { color: var(--ed-texto-suave); font-size: 13.5px; margin-top: 2px; }
+    .bib-grelha { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+    .bib-swatch { border-radius: 12px; overflow: hidden; border: 1px solid var(--ed-borda); background: var(--ed-superficie); }
+    .bib-swatch .cor { height: 84px; }
+    .bib-swatch .info { padding: 10px 12px; }
+    .bib-swatch .nome { font-weight: 600; font-size: 13.5px; }
+    .bib-swatch button.hex {
+      font: 500 12px/1 ui-monospace, monospace; color: var(--ed-texto-suave); background: none; border: 0;
+      padding: 3px 0 0; cursor: pointer; text-align: left;
+    }
+    .bib-swatch button.hex:hover { color: var(--ed-primario-claro); }
+    .bib-aviso {
+      display: flex; gap: 14px; padding: 18px 20px; border-radius: 12px;
+      background: rgba(255,102,122,.1); border: 1px solid rgba(255,102,122,.3); margin-bottom: 8px;
+    }
+    .bib-aviso b { color: var(--ed-erro); }
+    .bib-comparativo { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 14px; }
+    .bib-comparativo > div { border-radius: 10px; padding: 14px 16px; background: var(--ed-superficie); }
+    .bib-antes { border: 1.5px dashed rgba(255,102,122,.4); }
+    .bib-depois { border: 1.5px solid var(--ed-sucesso); }
+    .bib-comparativo .rotulo { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .bib-antes .rotulo { color: var(--ed-erro); }
+    .bib-depois .rotulo { color: var(--ed-sucesso); }
+    .bib-comparativo .amostra { margin-top: 10px; font-weight: 600; padding: 8px 10px; border-radius: 8px; }
+    .bib-comparativo .medida { font-size: 12.5px; color: var(--ed-texto-suave); margin-top: 8px; font-family: ui-monospace, monospace; }
+    .bib-tipo-amostra { background: var(--ed-superficie); border: 1px solid var(--ed-borda); border-radius: 12px; padding: 24px; }
+    .bib-tipo-rotulo { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ed-texto-suave); margin-bottom: 10px; }
+    .bib-icones { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 4px; text-align: center; }
+    .bib-icones div { padding: 14px 6px; border-radius: 10px; }
+    .bib-icones div:hover { background: var(--ed-superficie-elevada); }
+    .bib-icones .ed-icone { display: block; margin: 0 auto 8px; color: var(--ed-primario-claro); }
+    .bib-icones span.rotulo { font-size: 11.5px; color: var(--ed-texto-suave); }
+    .bib-escala-espaco { display: flex; align-items: flex-end; gap: 14px; }
+    .bib-escala-espaco div { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .bib-escala-espaco b { display: block; width: 28px; background: var(--ed-primario-claro); border-radius: 3px; }
+    .bib-escala-raio { display: flex; gap: 14px; }
+    .bib-escala-raio div { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .bib-escala-raio b { display: block; width: 56px; height: 56px; background: var(--ed-superficie-elevada); border: 1px solid var(--ed-borda); }
+    .bib-elevacao { display: flex; gap: 20px; }
+    .bib-elevacao div { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .bib-elevacao b { display: block; width: 84px; height: 60px; border-radius: 12px; background: var(--ed-superficie-elevada); }
+  </style>
+</head>
+<body>
+<div class="ed-pagina">
+  <main class="ed-env" style="padding-top:var(--ed-e6);padding-bottom:64px">
+
+    <!-- ══ cabeçalho ══════════════════════════════════════════════════ -->
+    <header class="ed-fila" style="justify-content:space-between;flex-wrap:wrap;gap:24px;padding-bottom:32px">
+      <div class="ed-fila" style="gap:18px">
+        <img src="web/marca/emdia-marca.png" alt="" width="56" height="56" />
+        <div>
+          <h1 style="font-size:30px">EmDia</h1>
+          <p class="ed-suave">Suas contas em dia — biblioteca de identidade visual, só referência.</p>
+        </div>
+      </div>
+      <p class="ed-suave" style="max-width:280px;text-align:right;font-size:13px">
+        ORGANIZE HOJE O AMANHÃ QUE VOCÊ QUER
+      </p>
+    </header>
+
+    <!-- ══ aviso de correção ═════════════════════════════════════════ -->
+    <div class="bib-aviso">
+      <span class="ed-icone i-fechar" aria-hidden="true" style="color:var(--ed-erro);flex-shrink:0"></span>
+      <div>
+        <p><b>Duas combinações do kit original falhavam o contraste mínimo</b>
+        (medição real, fórmula WCAG — a mesma do auditor da pp-base).</p>
+        <div class="bib-comparativo">
+          <div class="bib-antes" data-contraste-proposital>
+            <div class="rotulo">Antes — falha</div>
+            <div class="amostra" style="background:#536DFE;color:#fff">Adicionar conta</div>
+            <div class="medida">branco sobre #536DFE — 4,21:1 (mín. 4,5:1)</div>
+          </div>
+          <div class="bib-depois">
+            <div class="rotulo">Depois — passa</div>
+            <div class="amostra" style="background:#4F68F3;color:#fff">Adicionar conta</div>
+            <div class="medida">branco sobre #4F68F3 — 4,56:1</div>
+          </div>
+        </div>
+        <div class="bib-comparativo" style="margin-top:10px">
+          <div class="bib-antes" data-contraste-proposital>
+            <div class="rotulo">Antes — falha</div>
+            <div class="amostra" style="background:#32D39A;color:#fff">Pago</div>
+            <div class="medida">branco sobre sucesso/aviso/erro — 1,75:1 / 1,54:1 / 2,57:1</div>
+          </div>
+          <div class="bib-depois">
+            <div class="rotulo">Depois — passa</div>
+            <div class="amostra" style="background:#32D39A;color:#0B0F14">Pago</div>
+            <div class="medida">quase-preto sobre sucesso — 10,92:1 (aviso 12,42:1 · erro 7,43:1)</div>
+          </div>
+        </div>
+        <p class="ed-suave" style="margin-top:12px;font-size:13px">
+          A correção fica em dois tokens novos: <code>--ed-primario-botao</code> (só onde há texto
+          branco por cima — botão sólido) e <code>--ed-texto-em-selo</code> (todos os selos cheios).
+          <code>--ed-primario</code> original continua a existir para ícones, focos e decoração.
+        </p>
+      </div>
+    </div>
+
+    <!-- ══ 01. Marca ═════════════════════════════════════════════════ -->
+    <section class="bib-secao" id="marca">
+      <div class="bib-titulo-secao">
+        <span class="bib-num">01</span>
+        <div><h2>Marca</h2><p class="bib-sub">Ícone, wordmark, lockup e símbolo monocromático</p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px">
+        <div class="ed-cartao" style="text-align:center">
+          <img src="web/marca/emdia-512.png" alt="" width="80" height="80" style="border-radius:18px;margin-bottom:12px" />
+          <p class="bib-tipo-rotulo" style="margin:0">Ícone principal (App icon)</p>
+        </div>
+        <div class="ed-cartao" style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px">
+          <div class="ed-fila" style="gap:10px">
+            <img src="web/marca/emdia-marca.png" alt="" width="36" height="36" />
+            <span class="ed-h2">EmDia</span>
+          </div>
+          <p class="bib-tipo-rotulo" style="margin:0">Wordmark</p>
+        </div>
+        <div class="ed-cartao" style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px">
+          <div class="ed-fila" style="gap:8px">
+            <img src="web/marca/emdia-marca.png" alt="" width="24" height="24" />
+            <span class="ed-label">EmDia</span>
+          </div>
+          <p class="bib-tipo-rotulo" style="margin:0">Lockup compacto</p>
+        </div>
+        <div class="ed-cartao" style="text-align:center">
+          <img src="web/marca/emdia-marca.png" alt="" width="48" height="48" style="margin-bottom:12px" />
+          <p class="bib-tipo-rotulo" style="margin:0">Símbolo monocromático</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 02. Cores ═════════════════════════════════════════════════ -->
+    <section class="bib-secao" id="cores">
+      <div class="bib-titulo-secao">
+        <span class="bib-num">02</span>
+        <div><h2>Cores</h2><p class="bib-sub">Tokens — clique num hex para copiar</p></div>
+      </div>
+      <div class="bib-grelha">
+        <div class="bib-swatch">
+          <div class="cor" style="background:#536DFE"></div>
+          <div class="info"><div class="nome">Primary</div>
+            <button class="hex" data-copiar="#536DFE">#536DFE</button></div>
+        </div>
+        <div class="bib-swatch">
+          <div class="cor" style="background:#91ADFF"></div>
+          <div class="info"><div class="nome">Primary Light</div>
+            <button class="hex" data-copiar="#91ADFF">#91ADFF</button></div>
+        </div>
+        <div class="bib-swatch">
+          <div class="cor" style="background:#4F68F3"></div>
+          <div class="info"><div class="nome">Primary <span style="font-weight:400">· botão</span></div>
+            <button class="hex" data-copiar="#4F68F3">#4F68F3</button></div>
+        </div>
+        <div class="bib-swatch">
+          <div class="cor" style="background:#11101F;border-bottom:1px solid var(--ed-borda)"></div>
+          <div class="info"><div class="nome">Background</div>
+            <button class="hex" data-copiar="#11101F">#11101F</button></div>
+        </div>
+        <div class="bib-swatch">
+          <div class="cor" style="background:#191B2D"></div>
+          <div class="info"><div class="nome">Surface</div>
+            <button class="hex" data-copiar="#191B2D">#191B2D</button></div>
+        </div>
+        <div class="bib-swatch">
+          <div class="cor" style="background:#232741"></div>
+          <div class="info"><div class="nome">Surface Elevated</div>
+            <button class="hex" data-copiar="#232741">#232741</button></div>
+        </div>
+        <div class="bib-swatch">
+          <div class="cor" style="background:#39415F"></div>
+          <div class="info"><div class="nome">Border</div>
+            <button class="hex" data-copiar="#39415F">#39415F</button></div>
+        </div>
+        <div class="bib-swatch">
+          <div class="cor" style="background:#F6F4EF"></div>
+          <div class="info"><div class="nome">Text Primary</div>
+            <button class="hex" data-copiar="#F6F4EF">#F6F4EF</button></div>
+        </div>
+        <div class="bib-swatch">
+          <div class="cor" style="background:#B4C4C3"></div>
+          <div class="info"><div class="nome">Text Secondary</div>
+            <button class="hex" data-copiar="#B4C4C3">#B4C4C3</button></div>
+        </div>
+        <div class="bib-swatch">
+          <div class="cor" style="background:#32D39A"></div>
+          <div class="info"><div class="nome">Success</div>
+            <button class="hex" data-copiar="#32D39A">#32D39A</button></div>
+        </div>
+        <div class="bib-swatch">
+          <div class="cor" style="background:#F7BE4B"></div>
+          <div class="info"><div class="nome">Warning</div>
+            <button class="hex" data-copiar="#F7BE4B">#F7BE4B</button></div>
+        </div>
+        <div class="bib-swatch">
+          <div class="cor" style="background:#FF667A"></div>
+          <div class="info"><div class="nome">Error</div>
+            <button class="hex" data-copiar="#FF667A">#FF667A</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 03. Tipografia ════════════════════════════════════════════ -->
+    <section class="bib-secao" id="tipografia">
+      <div class="bib-titulo-secao">
+        <span class="bib-num">03</span>
+        <div><h2>Tipografia</h2><p class="bib-sub">Sora para títulos e destaques, Inter para texto e interface</p></div>
+      </div>
+      <div class="bib-tipo-amostra">
+        <p class="bib-tipo-rotulo">Display · 32/40</p>
+        <p class="ed-display" style="margin-bottom:20px">Organize hoje</p>
+        <p class="bib-tipo-rotulo">H1 · 24/32</p>
+        <p class="ed-h1" style="margin-bottom:20px">Suas contas em dia</p>
+        <p class="bib-tipo-rotulo">H2 · 20/28</p>
+        <p class="ed-h2" style="margin-bottom:20px">Mais controle</p>
+        <p class="bib-tipo-rotulo">Body · 16/24</p>
+        <p class="ed-body" style="margin-bottom:20px">Acompanhe e gerencie</p>
+        <p class="bib-tipo-rotulo">Label · 14/20</p>
+        <p class="ed-label" style="margin-bottom:20px">Nome da conta</p>
+        <p class="bib-tipo-rotulo">Caption · 12/16</p>
+        <p class="ed-caption" style="margin:0">Vence em 5 dias</p>
+      </div>
+    </section>
+
+    <!-- ══ 04. Foundations ═══════════════════════════════════════════ -->
+    <section class="bib-secao" id="foundations">
+      <div class="bib-titulo-secao">
+        <span class="bib-num">04</span>
+        <div><h2>Foundations</h2><p class="bib-sub">Espaçamento, raio, elevação e ícones</p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px;margin-bottom:32px">
+        <div>
+          <p class="bib-tipo-rotulo">Espaçamento (8pt)</p>
+          <div class="bib-escala-espaco">
+            <div><b style="height:4px"></b><span class="ed-caption">4</span></div>
+            <div><b style="height:8px"></b><span class="ed-caption">8</span></div>
+            <div><b style="height:12px"></b><span class="ed-caption">12</span></div>
+            <div><b style="height:16px"></b><span class="ed-caption">16</span></div>
+            <div><b style="height:24px"></b><span class="ed-caption">24</span></div>
+          </div>
+        </div>
+        <div>
+          <p class="bib-tipo-rotulo">Radius</p>
+          <div class="bib-escala-raio">
+            <div><b style="border-radius:8px"></b><span class="ed-caption">8</span></div>
+            <div><b style="border-radius:12px"></b><span class="ed-caption">12</span></div>
+            <div><b style="border-radius:16px"></b><span class="ed-caption">16</span></div>
+            <div><b style="border-radius:24px"></b><span class="ed-caption">24</span></div>
+          </div>
+        </div>
+        <div>
+          <p class="bib-tipo-rotulo">Elevação</p>
+          <div class="bib-elevacao">
+            <div><b style="box-shadow:var(--ed-sombra-baixa)"></b><span class="ed-caption">Baixa</span></div>
+            <div><b style="box-shadow:var(--ed-sombra-media)"></b><span class="ed-caption">Média</span></div>
+            <div><b style="box-shadow:var(--ed-sombra-alta)"></b><span class="ed-caption">Alta</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="bib-tipo-rotulo">Ícones (linha, 2px)</p>
+      <div class="bib-icones">
+        <div><span class="ed-icone ed-icone-24 i-casa" aria-hidden="true"></span><span class="rotulo">Início</span></div>
+        <div><span class="ed-icone ed-icone-24 i-energia" aria-hidden="true"></span><span class="rotulo">Energia</span></div>
+        <div><span class="ed-icone ed-icone-24 i-internet" aria-hidden="true"></span><span class="rotulo">Internet</span></div>
+        <div><span class="ed-icone ed-icone-24 i-agua" aria-hidden="true"></span><span class="rotulo">Água</span></div>
+        <div><span class="ed-icone ed-icone-24 i-calendario" aria-hidden="true"></span><span class="rotulo">Calendário</span></div>
+        <div><span class="ed-icone ed-icone-24 i-utilizador" aria-hidden="true"></span><span class="rotulo">Perfil</span></div>
+        <div><span class="ed-icone ed-icone-24 i-notificacoes" aria-hidden="true"></span><span class="rotulo">Avisos</span></div>
+        <div><span class="ed-icone ed-icone-24 i-procurar" aria-hidden="true"></span><span class="rotulo">Pesquisar</span></div>
+        <div><span class="ed-icone ed-icone-24 i-mais" aria-hidden="true"></span><span class="rotulo">Mais</span></div>
+        <div><span class="ed-icone ed-icone-24 i-fechar" aria-hidden="true"></span><span class="rotulo">Fechar</span></div>
+        <div><span class="ed-icone ed-icone-24 i-verificar" aria-hidden="true"></span><span class="rotulo">Confirmar</span></div>
+        <div><span class="ed-icone ed-icone-24 i-lixo" aria-hidden="true"></span><span class="rotulo">Remover</span></div>
+      </div>
+    </section>
+
+    <!-- ══ 05. Botões ════════════════════════════════════════════════ -->
+    <section class="bib-secao" id="botoes">
+      <div class="bib-titulo-secao">
+        <span class="bib-num">05</span>
+        <div><h2>Botões</h2><p class="bib-sub">Primário, secundário, terciário, perigoso e ícone</p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px">
+        <div>
+          <p class="bib-tipo-rotulo">Primário</p>
+          <!-- carregando/desativado: texto sem contraste suficiente é
+               esperado (WCAG 1.4.3 isenta componentes inativos) -->
+          <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start" data-contraste-proposital>
+            <button type="button" class="ed-botao ed-botao-primario"><span class="ed-icone ed-icone-16 i-mais" aria-hidden="true"></span>Adicionar conta</button>
+            <button type="button" class="ed-botao ed-botao-primario ed-botao-carregando">Adicionando…</button>
+            <button type="button" class="ed-botao ed-botao-primario" disabled>Adicionar conta</button>
+          </div>
+        </div>
+        <div>
+          <p class="bib-tipo-rotulo">Secundário</p>
+          <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start" data-contraste-proposital>
+            <button type="button" class="ed-botao ed-botao-secundario">Pagar agora</button>
+            <button type="button" class="ed-botao ed-botao-secundario" disabled>Pagar agora</button>
+          </div>
+        </div>
+        <div>
+          <p class="bib-tipo-rotulo">Terciário</p>
+          <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+            <button type="button" class="ed-botao ed-botao-terciario">Ver detalhes<span class="ed-icone ed-icone-16 i-seta-direita" aria-hidden="true"></span></button>
+          </div>
+        </div>
+        <div>
+          <p class="bib-tipo-rotulo">Perigoso</p>
+          <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+            <button type="button" class="ed-botao ed-botao-perigoso">Cancelar</button>
+            <button type="button" class="ed-botao ed-botao-perigoso ed-botao-pequeno"><span class="ed-icone ed-icone-16 i-lixo" aria-hidden="true"></span>Remover</button>
+          </div>
+        </div>
+        <div>
+          <p class="bib-tipo-rotulo">Ícone</p>
+          <div class="ed-fila">
+            <button type="button" class="ed-botao-icone" aria-label="Adicionar"><span class="ed-icone ed-icone-16 i-mais" aria-hidden="true"></span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 06. Inputs e controlos ════════════════════════════════════ -->
+    <section class="bib-secao" id="inputs">
+      <div class="bib-titulo-secao">
+        <span class="bib-num">06</span>
+        <div><h2>Inputs e controlos</h2><p class="bib-sub">Estados e componentes de formulário</p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--ed-e4);margin-bottom:24px">
+        <div class="ed-campo" style="margin:0">
+          <label for="ex-nome">Nome da conta</label>
+          <input id="ex-nome" placeholder="Ex.: Conta de luz" />
+        </div>
+        <div class="ed-campo" style="margin:0">
+          <label for="ex-valor">Valor (preenchido)</label>
+          <input id="ex-valor" value="€ 89,40" readonly />
+        </div>
+        <div class="ed-campo ed-erro" style="margin:0">
+          <label for="ex-erro">Valor (erro)</label>
+          <input id="ex-erro" value="€ 89,40" readonly />
+          <p class="ed-msg-erro"><span class="ed-icone ed-icone-16 i-fechar" aria-hidden="true"></span>Valor inválido</p>
+        </div>
+        <div class="ed-campo" style="margin:0">
+          <label for="ex-desativado">Desativado</label>
+          <input id="ex-desativado" value="€ 69,40" disabled />
+        </div>
+        <div class="ed-campo ed-busca" style="margin:0">
+          <label for="ex-busca">Pesquisar contas</label>
+          <span class="ed-icone i-procurar" aria-hidden="true"></span>
+          <input id="ex-busca" type="search" placeholder="Buscar contas…" />
+        </div>
+        <div class="ed-campo" style="margin:0">
+          <label for="ex-categoria">Categoria</label>
+          <select id="ex-categoria"><option>Selecione</option></select>
+        </div>
+      </div>
+      <div class="ed-fila" style="gap:32px">
+        <label class="ed-toggle"><input type="checkbox" checked /><span class="trilho"></span></label>
+        <span class="ed-label">Lembrete</span>
+        <label class="ed-checkbox"><input type="checkbox" checked />Conta recorrente</label>
+        <label class="ed-radio"><input type="radio" name="ex-r" checked />Mensal</label>
+        <label class="ed-radio"><input type="radio" name="ex-r" />Única vez</label>
+      </div>
+    </section>
+
+    <!-- ══ 07. Contas ════════════════════════════════════════════════ -->
+    <section class="bib-secao" id="contas">
+      <div class="bib-titulo-secao">
+        <span class="bib-num">07</span>
+        <div><h2>Contas</h2><p class="bib-sub">Lista e card</p></div>
+      </div>
+      <div class="ed-cartao" style="max-width:420px">
+        <div class="ed-conta-linha">
+          <span class="ed-conta-icone"><span class="ed-icone i-agua" aria-hidden="true"></span></span>
+          <div class="info"><div class="nome">Água</div><div class="venc">Vence em 5 dias</div></div>
+          <div class="valor">€ 28,50</div>
+        </div>
+        <div class="ed-conta-linha">
+          <span class="ed-conta-icone"><span class="ed-icone i-energia" aria-hidden="true"></span></span>
+          <div class="info"><div class="nome">Energia</div><div class="venc">Vence hoje</div></div>
+          <div class="valor">€ 64,20</div>
+        </div>
+        <div class="ed-conta-linha">
+          <span class="ed-conta-icone"><span class="ed-icone i-internet" aria-hidden="true"></span></span>
+          <div class="info"><div class="nome">Internet</div><div class="venc">Vence em 12 dias</div></div>
+          <div class="valor">€ 39,90</div>
+        </div>
+        <div class="ed-conta-linha">
+          <span class="ed-conta-icone"><span class="ed-icone i-casa" aria-hidden="true"></span></span>
+          <div class="info"><div class="nome">Aluguel</div><div class="venc">Vence em 5 dias</div></div>
+          <div class="valor">€ 650,00</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 08. Status ════════════════════════════════════════════════ -->
+    <section class="bib-secao" id="status">
+      <div class="bib-titulo-secao">
+        <span class="bib-num">08</span>
+        <div><h2>Status</h2><p class="bib-sub">Selos — texto quase-preto sobre preenchimento cheio (ver correção acima)</p></div>
+      </div>
+      <div class="ed-fila">
+        <span class="ed-selo ed-selo-pago"><span class="ponto"></span>Pago</span>
+        <span class="ed-selo ed-selo-pendente"><span class="ponto"></span>Pendente</span>
+        <span class="ed-selo ed-selo-vence-hoje"><span class="ponto"></span>Vence hoje</span>
+        <span class="ed-selo ed-selo-atrasado"><span class="ponto"></span>Atrasado</span>
+      </div>
+    </section>
+
+    <!-- ══ 09. Dados financeiros ═════════════════════════════════════ -->
+    <section class="bib-secao" id="financeiro">
+      <div class="bib-titulo-secao">
+        <span class="bib-num">09</span>
+        <div><h2>Dados financeiros</h2><p class="bib-sub">Totais, distribuição e histórico</p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--ed-e4)">
+        <div class="ed-cartao">
+          <p class="bib-tipo-rotulo">Total do mês</p>
+          <p class="ed-display">€ 742,80</p>
+          <p class="ed-caption" style="color:var(--ed-sucesso)">↑ 12% em relação ao mês anterior</p>
+        </div>
+        <div class="ed-cartao" style="display:flex;align-items:center;gap:20px">
+          <div class="ed-donut" style="--pct:72"><span>72%</span></div>
+          <div>
+            <p class="ed-label" style="margin-bottom:8px">Gastos por categoria</p>
+            <p class="ed-caption">● Moradia 38% · Contas 28%<br>● Internet 18% · Outros 16%</p>
+          </div>
+        </div>
+        <div class="ed-cartao">
+          <p class="bib-tipo-rotulo">Últimos 6 meses</p>
+          <div class="ed-barra-mensal">
+            <div class="col"><b style="height:40%"></b><span>Mar</span></div>
+            <div class="col"><b style="height:55%"></b><span>Abr</span></div>
+            <div class="col"><b style="height:50%"></b><span>Mai</span></div>
+            <div class="col"><b style="height:70%"></b><span>Jun</span></div>
+            <div class="col"><b style="height:60%"></b><span>Jul</span></div>
+            <div class="col"><b style="height:80%"></b><span>Ago</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 10. Navegação ═════════════════════════════════════════════ -->
+    <section class="bib-secao" id="navegacao">
+      <div class="bib-titulo-secao">
+        <span class="bib-num">10</span>
+        <div><h2>Navegação</h2><p class="bib-sub">Barra de topo, segmentado, rodapé e paginação</p></div>
+      </div>
+      <div style="border-radius:var(--ed-r-lg);overflow:hidden;box-shadow:var(--ed-sombra-media);margin-bottom:24px">
+        <div class="ed-topo" style="position:static">
+          <div class="ed-topo-int">
+            <button type="button" class="ed-botao-icone" style="background:transparent;color:var(--ed-texto)" aria-label="Menu">
+              <span class="ed-icone i-menu" aria-hidden="true"></span>
+            </button>
+            <a class="ed-marca" href="#"><img src="web/marca/emdia-marca.png" alt="" />EmDia</a>
+            <span style="flex:1"></span>
+            <span class="ed-icone i-notificacoes" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+      <div class="ed-fila" style="gap:32px;align-items:flex-start;flex-wrap:wrap">
+        <div>
+          <p class="bib-tipo-rotulo">Segmentado</p>
+          <div class="ed-segmentado">
+            <button type="button" aria-current="true">Todas</button>
+            <button type="button">Pendentes</button>
+            <button type="button">Pagas</button>
+          </div>
+        </div>
+        <div>
+          <p class="bib-tipo-rotulo">Paginação</p>
+          <nav class="ed-paginacao" aria-label="Paginação">
+            <button type="button" disabled data-contraste-proposital>‹</button>
+            <button type="button" aria-current="page">1</button>
+            <button type="button">2</button>
+            <button type="button">3</button>
+            <button type="button">›</button>
+          </nav>
+        </div>
+      </div>
+      <p class="bib-tipo-rotulo" style="margin-top:24px">Navegação inferior</p>
+      <div class="ed-nav-inferior" style="max-width:360px;border-radius:var(--ed-r-lg)">
+        <a href="#" aria-current="page"><span class="ed-icone i-casa" aria-hidden="true"></span>Início</a>
+        <a href="#"><span class="ed-icone i-calendario" aria-hidden="true"></span>Contas</a>
+        <a href="#"><span class="ed-icone i-calendario" aria-hidden="true"></span>Calendário</a>
+        <a href="#"><span class="ed-icone i-utilizador" aria-hidden="true"></span>Perfil</a>
+      </div>
+    </section>
+
+    <!-- ══ 11. Feedback ══════════════════════════════════════════════ -->
+    <section class="bib-secao" id="feedback">
+      <div class="bib-titulo-secao">
+        <span class="bib-num">11</span>
+        <div><h2>Feedback</h2><p class="bib-sub">Toast, erro inline, vazio, modal e notificação</p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--ed-e4)">
+        <div class="ed-toast">
+          <span class="ed-icone i-verificar" aria-hidden="true" style="color:var(--ed-sucesso)"></span>
+          <div><div class="titulo">Conta adicionada</div><div class="desc">Sua conta foi cadastrada com sucesso</div></div>
+        </div>
+        <div class="ed-cartao">
+          <div class="ed-vazio" style="padding:var(--ed-e4)">
+            <span class="ed-icone ed-icone-24 i-calendario" aria-hidden="true"></span>
+            <p class="ed-label" style="color:var(--ed-texto)">Nenhuma conta encontrada</p>
+            <p class="ed-caption" style="margin-bottom:var(--ed-e3)">Adicione sua primeira conta para começar a organizar.</p>
+            <button type="button" class="ed-botao ed-botao-primario ed-botao-pequeno">Adicionar conta</button>
+          </div>
+        </div>
+        <div class="ed-modal">
+          <p class="ed-h2" style="margin-bottom:8px">Marcar como paga?</p>
+          <p class="ed-caption" style="margin-bottom:var(--ed-e4)">Essa conta será movida para a categoria "Pagas".</p>
+          <div class="ed-fila" style="justify-content:flex-end">
+            <button type="button" class="ed-botao ed-botao-terciario ed-botao-pequeno">Cancelar</button>
+            <button type="button" class="ed-botao ed-botao-primario ed-botao-pequeno">Confirmar</button>
+          </div>
+        </div>
+        <div class="ed-notificacao">
+          <span class="ed-icone i-notificacoes" aria-hidden="true" style="color:var(--ed-aviso)"></span>
+          <div><div class="ed-label">Conta vence hoje · 09:00</div>
+            <div class="ed-caption">Sua conta de Energia vence hoje. Evite juros!</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 12. Templates ═════════════════════════════════════════════ -->
+    <section class="bib-secao" id="templates">
+      <div class="bib-titulo-secao">
+        <span class="bib-num">12</span>
+        <div><h2>Templates</h2><p class="bib-sub">Componentes prontos, compostos a partir do sistema acima</p></div>
+      </div>
+      <div class="ed-cartao" style="max-width:420px">
+        <p class="ed-caption">Olá,</p>
+        <p class="ed-h1" style="margin-bottom:var(--ed-e3)">Bom dia! ☀️</p>
+        <div class="ed-fila" style="justify-content:space-between">
+          <div>
+            <p class="ed-caption">Total do mês</p>
+            <p class="ed-h1">€ 742,80</p>
+          </div>
+          <span class="ed-selo ed-selo-vence-hoje">↑ 12%</span>
+        </div>
+      </div>
+    </section>
+
+    <footer class="ed-suave" style="padding-top:32px;font-size:12.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
+      <span>EMDIA · BIBLIOTECA DE IDENTIDADE VISUAL</span>
+      <span>DESIGN SYSTEM V1.0</span>
+    </footer>
+  </main>
+</div>
+
+<script src="web/biblioteca/emdia.js?v=81a2e111"></script>
+</body>
+</html>
