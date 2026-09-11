@@ -1,4 +1,4 @@
-# pp-utilities — EmDia
+# EmDia
 
 Cobranças recorrentes — água, energia, internet, telecom, renda (Prepara Portugal)
 
