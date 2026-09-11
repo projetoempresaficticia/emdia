@@ -49,6 +49,7 @@ async function carregar() {
 ligarVerSenha();
 ligarFormularioLogin('form-login', async () => {
   const ctx = await quemSou();
+  if (seProfessorRedirecionar(ctx)) return;
   if (!ctx || !ctx.empresa) {
     mostrarMsg(document.querySelector('#form-login .ed-msg'),
       'Esta conta não está associada a nenhuma empresa.', 'erro');
@@ -57,7 +58,6 @@ ligarFormularioLogin('form-login', async () => {
   }
   mostrarPainel();
   montarTopo(ctx);
-  montarNavInferior('index.html');
   document.getElementById('saudacao-nome').textContent = saudacaoDaHora();
   document.getElementById('saudacao-hora').textContent = 'Olá, ' + ctx.empresa.nome;
   await carregar();
@@ -65,10 +65,10 @@ ligarFormularioLogin('form-login', async () => {
 
 (async function arrancar() {
   const ctx = await quemSou();
+  if (seProfessorRedirecionar(ctx)) return;
   if (!ctx || !ctx.empresa) { mostrarEntrada(); return; }
   mostrarPainel();
   montarTopo(ctx);
-  montarNavInferior('index.html');
   document.getElementById('saudacao-nome').textContent = saudacaoDaHora();
   document.getElementById('saudacao-hora').textContent = 'Olá, ' + ctx.empresa.nome;
   await carregar();

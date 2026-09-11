@@ -100,6 +100,18 @@ async function quemSou() {
   return { pessoa, empresa };
 }
 
+// Só a professora tem professor.html; se uma conta de professor entrar
+// numa página da empresa (a de teste até tem empresa ligada — ver
+// [[project-estado-pp-utilities-emdia]]), manda sempre para o painel
+// dela em vez de mostrar um portão sem saída ou o painel errado.
+function seProfessorRedirecionar(ctx) {
+  if (ctx && ctx.pessoa && ctx.pessoa.papel === 'professor') {
+    window.location.replace(comVersao('professor.html'));
+    return true;
+  }
+  return false;
+}
+
 function mostrarMsg(el, texto, tipo) {
   if (!el) return;
   el.textContent = texto || '';
@@ -142,16 +154,37 @@ function ligarFormularioLogin(idForm, aoEntrar) {
   });
 }
 
-// ── topo + navegação inferior ───────────────────────────────────────
+// ── topo (menu sempre em cima — mesmo padrão do resto do ecossistema,
+// nunca uma barra fixa no fundo) ─────────────────────────────────────
+// A professora e a empresa veem menus diferentes: a professora só tem o
+// seu próprio painel (mesmo que a conta de teste tenha por acaso uma
+// empresa ligada — ver [[project-estado-pp-utilities-emdia]]).
 function montarTopo(ctx) {
   const el = document.getElementById('topo');
   if (!el) return;
   el.className = 'ed-topo';
+  const ehProfessor = ctx.pessoa.papel === 'professor';
+  const paginaAtual = window.location.pathname.split('/').pop();
+
+  const links = ehProfessor
+    ? [{ href: 'professor.html', rotulo: 'Painel da professora' }]
+    : [
+        { href: 'index.html', rotulo: 'Início' },
+        { href: 'contas.html', rotulo: 'Contas' },
+        { href: 'calendario.html', rotulo: 'Calendário' },
+        { href: 'perfil.html', rotulo: 'Perfil' },
+      ];
+
   el.innerHTML = `
     <div class="ed-topo-int">
-      <a class="ed-marca" href="${comVersao('index.html')}"><img src="web/marca/emdia-marca.png" alt="" />EmDia</a>
+      <a class="ed-marca" href="${comVersao(ehProfessor ? 'professor.html' : 'index.html')}">
+        <img src="web/marca/emdia-marca.png" alt="" />EmDia</a>
+      <nav aria-label="Navegação principal">
+        ${links.map((l) => `<a href="${comVersao(l.href)}"
+             ${l.href === paginaAtual ? 'aria-current="page"' : ''}>${esc(l.rotulo)}</a>`).join('')}
+      </nav>
       <span style="flex:1"></span>
-      <span class="ed-suave" style="font-size:13px">${esc(ctx.pessoa.papel === 'professor' || !ctx.empresa ? ctx.pessoa.nome : ctx.empresa.nome)}</span>
+      <span class="ed-suave ed-topo-nome" style="font-size:13px">${esc(ehProfessor || !ctx.empresa ? ctx.pessoa.nome : ctx.empresa.nome)}</span>
       <button type="button" class="ed-botao-icone" style="background:transparent;color:var(--ed-texto)" id="btn-sair" aria-label="Sair">
         <span class="ed-icone i-fechar" aria-hidden="true"></span>
       </button>
@@ -160,22 +193,6 @@ function montarTopo(ctx) {
     try { await sb.auth.signOut(); } catch (e) { /* sai de qualquer forma */ }
     window.location.href = 'entrar.html';
   });
-}
-
-function montarNavInferior(paginaAtual) {
-  const el = document.getElementById('nav-inferior');
-  if (!el) return;
-  const itens = [
-    { href: 'index.html', icone: 'i-casa', rotulo: 'Início' },
-    { href: 'contas.html', icone: 'i-recibo', rotulo: 'Contas' },
-    { href: 'calendario.html', icone: 'i-calendario', rotulo: 'Calendário' },
-    { href: 'perfil.html', icone: 'i-utilizador', rotulo: 'Perfil' },
-  ];
-  el.className = 'ed-nav-inferior';
-  el.innerHTML = itens.map((it) => `
-    <a href="${comVersao(it.href)}" ${it.href === paginaAtual ? 'aria-current="page"' : ''}>
-      <span class="ed-icone ${it.icone}" aria-hidden="true"></span>${it.rotulo}
-    </a>`).join('');
 }
 
 // ── janelas ──────────────────────────────────────────────────────────

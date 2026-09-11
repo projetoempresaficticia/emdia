@@ -2,7 +2,7 @@
 <html lang="pt-PT">
 <head>
   <meta charset="UTF-8" />
-  <meta name="emdia-versao" content="05e1909245cc" />
+  <meta name="emdia-versao" content="8a20d26f5c9d" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Biblioteca — EmDia</title>
   <meta name="description" content="Referência de identidade visual: cores, tipografia e componentes." />
@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" />
-  <link rel="stylesheet" href="web/biblioteca/emdia.css?v=00eb136d" />
+  <link rel="stylesheet" href="web/biblioteca/emdia.css?v=eba7dd40" />
   <style>
     /* só desta página — não faz parte do sistema de desenho da app */
     .bib-secao { padding: 40px 0; border-top: 1px solid var(--ed-borda); }
@@ -465,17 +465,21 @@
     <section class="bib-secao" id="navegacao">
       <div class="bib-titulo-secao">
         <span class="bib-num">10</span>
-        <div><h2>Navegação</h2><p class="bib-sub">Barra de topo, segmentado, rodapé e paginação</p></div>
+        <div><h2>Navegação</h2><p class="bib-sub">Barra de topo com o menu — nunca uma barra fixa no fundo</p></div>
       </div>
       <div style="border-radius:var(--ed-r-lg);overflow:hidden;box-shadow:var(--ed-sombra-media);margin-bottom:24px">
         <div class="ed-topo" style="position:static">
           <div class="ed-topo-int">
-            <button type="button" class="ed-botao-icone" style="background:transparent;color:var(--ed-texto)" aria-label="Menu">
-              <span class="ed-icone i-menu" aria-hidden="true"></span>
-            </button>
             <a class="ed-marca" href="#"><img src="web/marca/emdia-marca.png" alt="" />EmDia</a>
+            <nav aria-label="Navegação principal">
+              <a href="#" aria-current="page">Início</a>
+              <a href="#">Contas</a>
+              <a href="#">Calendário</a>
+              <a href="#">Perfil</a>
+            </nav>
             <span style="flex:1"></span>
-            <span class="ed-icone i-notificacoes" aria-hidden="true"></span>
+            <span class="ed-suave" style="font-size:13px">Padaria Central</span>
+            <span class="ed-icone i-fechar" aria-hidden="true"></span>
           </div>
         </div>
       </div>
@@ -498,13 +502,6 @@
             <button type="button">›</button>
           </nav>
         </div>
-      </div>
-      <p class="bib-tipo-rotulo" style="margin-top:24px">Navegação inferior</p>
-      <div class="ed-nav-inferior" style="max-width:360px;border-radius:var(--ed-r-lg)">
-        <a href="#" aria-current="page"><span class="ed-icone i-casa" aria-hidden="true"></span>Início</a>
-        <a href="#"><span class="ed-icone i-calendario" aria-hidden="true"></span>Contas</a>
-        <a href="#"><span class="ed-icone i-calendario" aria-hidden="true"></span>Calendário</a>
-        <a href="#"><span class="ed-icone i-utilizador" aria-hidden="true"></span>Perfil</a>
       </div>
     </section>
 
@@ -569,6 +566,6 @@
   </main>
 </div>
 
-<script src="web/biblioteca/emdia.js?v=218b440d"></script>
+<script src="web/biblioteca/emdia.js?v=babf5823"></script>
 </body>
 </html>

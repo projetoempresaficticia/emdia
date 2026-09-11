@@ -225,21 +225,19 @@ table.ed-tabela { width: 100%; border-collapse: collapse; background: var(--ed-s
 .ed-marca { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ed-texto);
   font-family: var(--ed-display); font-weight: 700; font-size: 18px; }
 .ed-marca img { width: 30px; height: 30px; display: block; }
+.ed-topo nav { display: flex; align-items: center; gap: 2px; margin-left: var(--ed-e4); }
+.ed-topo nav a {
+  display: inline-flex; align-items: center; padding: 8px 12px; border-radius: var(--ed-r-sm);
+  color: var(--ed-texto-suave); text-decoration: none; font: 500 14px/1 var(--ed-fonte);
+}
+.ed-topo nav a:hover { background: var(--ed-superficie-elevada); color: var(--ed-texto); }
+.ed-topo nav a[aria-current="page"] { color: var(--ed-texto); font-weight: 600; background: var(--ed-superficie-elevada); }
 .ed-segmentado { display: inline-flex; background: var(--ed-superficie-elevada); border-radius: var(--ed-r); padding: 3px; gap: 2px; }
 .ed-segmentado button {
   border: 0; background: transparent; color: var(--ed-texto-suave); padding: 7px 16px;
   border-radius: calc(var(--ed-r) - 3px); font: 600 13.5px/1 var(--ed-fonte); cursor: pointer;
 }
 .ed-segmentado button[aria-current="true"] { background: var(--ed-primario-botao); color: #fff; }
-.ed-nav-inferior {
-  display: flex; justify-content: space-around; background: var(--ed-superficie);
-  border-top: 1px solid var(--ed-borda); padding: 8px 0;
-}
-.ed-nav-inferior a {
-  display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none;
-  color: var(--ed-texto-suave); font-size: 11px; padding: 4px 12px;
-}
-.ed-nav-inferior a[aria-current="page"] { color: var(--ed-primario-claro); }
 .ed-paginacao { display: flex; gap: 4px; align-items: center; }
 .ed-paginacao button {
   min-width: 34px; height: 34px; border-radius: var(--ed-r-sm); border: 1px solid var(--ed-borda);
@@ -313,4 +311,10 @@ dialog::backdrop { background: rgba(0,0,0,.6); }
 @media (max-width: 640px) {
   .ed-entrada { background-image: none; }
   .ed-entrada::before { display: none; }
+  /* quatro links + nome + sair não cabem numa só linha a 390px — a nav
+     quebra para baixo em vez de cortar/sobrepor texto (mesma lição do
+     Diário da República). */
+  .ed-topo-int { flex-wrap: wrap; row-gap: 4px; }
+  .ed-topo nav { flex: 1 1 100%; flex-wrap: wrap; margin-left: 0; order: 3; }
+  .ed-topo-nome { display: none; }
 }
