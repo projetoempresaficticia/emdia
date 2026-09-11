@@ -18,6 +18,7 @@ function linhaEmpresaResumo(e) {
       <td>${esc(formatarDinheiro(e.valor))}</td>
       <td><span class="ed-selo ed-selo-${chave}"><span class="ponto"></span>${esc(rotuloEstado(chave))}</span></td>
       <td>${esc(formatarData(e.prazo))}</td>
+      <td>${botaoVerBoleto(e.entidade, e.referencia)}</td>
     </tr>`;
 }
 
@@ -38,7 +39,7 @@ function cartaoResumo(grupo, indice) {
               style="margin-top:var(--ed-e3)" data-alternar="resumo-${indice}">Ver empresas</button>
       <div class="ed-tabela-envolt" id="resumo-${indice}" hidden style="margin-top:var(--ed-e3)">
         <table class="ed-tabela">
-          <thead><tr><th>Empresa</th><th>Valor</th><th>Estado</th><th>Prazo</th></tr></thead>
+          <thead><tr><th>Empresa</th><th>Valor</th><th>Estado</th><th>Prazo</th><th>Boleto</th></tr></thead>
           <tbody>${grupo.empresas.map(linhaEmpresaResumo).join('')}</tbody>
         </table>
       </div>
@@ -58,6 +59,7 @@ async function carregarResumo() {
       btn.textContent = aberta ? 'Ver empresas' : 'Ocultar empresas';
     });
   });
+  ligarBotoesBoleto(elListaResumo);
 }
 
 document.getElementById('form-emitir').addEventListener('submit', async (ev) => {

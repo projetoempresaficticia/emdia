@@ -35,6 +35,7 @@ async function carregar() {
       <p class="bib-tipo-rotulo" style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ed-texto-suave);margin-bottom:10px">Próxima conta</p>
       <div class="ed-cartao">${linhaConta(proxima, true)}</div>`;
     ligarBotoesPagar(elProxima, () => carregar());
+    ligarBotoesBoleto(elProxima);
   } else {
     elProxima.innerHTML = '';
   }

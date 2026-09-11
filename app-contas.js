@@ -28,10 +28,12 @@ function linhaConta(c, comAcao) {
         <span class="ed-selo ed-selo-${c.chaveEstado}" style="margin-top:4px">
           <span class="ponto"></span>${esc(rotuloEstado(c.chaveEstado))}</span>
       </div>
-      ${comAcao && podePagar
-        ? `<button type="button" class="ed-botao ed-botao-primario ed-botao-pequeno"
-             style="margin-left:12px" data-pagar="${esc(c.fatura_id)}">Pagar</button>`
-        : ''}
+      ${comAcao ? `
+        <div class="ed-fila" style="margin-left:12px;flex-wrap:nowrap">
+          ${botaoVerBoleto(c.entidade, c.referencia)}
+          ${podePagar ? `<button type="button" class="ed-botao ed-botao-primario ed-botao-pequeno"
+             data-pagar="${esc(c.fatura_id)}">Pagar</button>` : ''}
+        </div>` : ''}
     </div>`;
 }
 

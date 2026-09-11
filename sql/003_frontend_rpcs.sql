@@ -68,7 +68,8 @@ begin
   loop
     select coalesce(jsonb_agg(jsonb_build_object(
              'empresa_cedula', f.devedor_cedula, 'empresa_nome', e.nome,
-             'valor', f.valor_total, 'estado', f.estado, 'prazo', b.prazo
+             'valor', f.valor_total, 'estado', f.estado, 'prazo', b.prazo,
+             'entidade', b.entidade, 'referencia', b.referencia_mb
            ) order by e.nome), '[]'::jsonb)
       into v_empresas
       from public.faturas f

@@ -195,6 +195,99 @@ function montarTopo(ctx) {
   });
 }
 
+// ── boleto (popup com o documento real, reaproveitando
+// banco_boleto_documento — o mesmo que Prepacoin já usa, nada de
+// mecanismo novo) ─────────────────────────────────────────────────────
+function janelaBoleto() {
+  let d = document.getElementById('janela-boleto');
+  if (d) return d;
+  d = document.createElement('dialog');
+  d.id = 'janela-boleto';
+  d.className = 'ed-modal-boleto';
+  document.body.appendChild(d);
+  d.addEventListener('click', (ev) => { if (ev.target === d) d.close(); });
+  return d;
+}
+
+function linhaBoletoItem(l) {
+  return `<tr><td>${esc(l.descricao)}</td><td>${l.quantidade}</td>
+    <td>${esc(formatarDinheiro(l.valor_unitario))}</td><td>${esc(formatarDinheiro(l.total))}</td></tr>`;
+}
+
+async function abrirBoleto(entidade, referencia) {
+  const d = janelaBoleto();
+  d.innerHTML = '<div class="ed-janela-cabeca"><h2>Boleto</h2></div><p class="ed-vazio">A carregar…</p>';
+  if (!d.open) d.showModal();
+
+  const r = await api('banco_boleto_documento', { p_entidade: entidade, p_referencia: referencia });
+  if (!r.ok) {
+    d.innerHTML = `
+      <div class="ed-janela-cabeca"><h2>Boleto</h2>
+        <button type="button" class="ed-icone-botao" id="boleto-fechar" aria-label="Fechar">
+          <span class="ed-icone i-fechar" aria-hidden="true"></span></button></div>
+      <p class="ed-vazio">${esc(r.erro)}</p>`;
+    d.querySelector('#boleto-fechar').addEventListener('click', () => d.close());
+    return;
+  }
+  const b = r.dados;
+  const chaveEstado = b.estado === 'pago' ? 'pago' : (b.vencido ? 'atrasado' : 'pendente');
+  const refEspacada = b.referencia.replace(/(\d{3})(?=\d)/g, '$1 ');
+
+  d.innerHTML = `
+    <div class="ed-janela-cabeca">
+      <h2>Boleto · ${esc(b.fatura)}</h2>
+      <button type="button" class="ed-icone-botao" id="boleto-fechar" aria-label="Fechar">
+        <span class="ed-icone i-fechar" aria-hidden="true"></span></button>
+    </div>
+    <div class="ed-boleto-corpo">
+      <div class="ed-fila" style="justify-content:space-between;align-items:flex-start">
+        <div>
+          <p class="ed-caption">${esc(b.emitente)} → ${esc(b.devedor)}</p>
+          <p class="ed-label" style="margin-top:2px">${esc(b.descricao)}</p>
+        </div>
+        <span class="ed-selo ed-selo-${chaveEstado}"><span class="ponto"></span>${esc(rotuloEstado(chaveEstado))}</span>
+      </div>
+
+      <p class="ed-display" style="margin-top:var(--ed-e4)">${esc(formatarDinheiro(b.valor))}</p>
+
+      <div class="ed-boleto-linha-digitavel">
+        <span class="ed-caption">Entidade</span>
+        <span class="mono">${esc(b.entidade)}</span>
+        <span class="ed-caption" style="margin-top:8px">Referência</span>
+        <span class="mono">${esc(refEspacada)}</span>
+      </div>
+
+      <div class="ed-fila" style="justify-content:space-between;margin-top:var(--ed-e3)">
+        <span class="ed-caption">Prazo: ${esc(formatarData(b.prazo))}</span>
+        <span class="ed-caption">${b.pago_em ? 'Pago em ' + esc(formatarData(b.pago_em)) : 'Emitido em ' + esc(formatarData(b.emitido_em))}</span>
+      </div>
+
+      ${b.linhas.length ? `
+        <div class="ed-tabela-envolt" style="margin-top:var(--ed-e4)">
+          <table class="ed-tabela">
+            <thead><tr><th>Descrição</th><th>Qtd.</th><th>Valor unit.</th><th>Total</th></tr></thead>
+            <tbody>${b.linhas.map(linhaBoletoItem).join('')}</tbody>
+          </table>
+        </div>` : ''}
+    </div>`;
+  d.querySelector('#boleto-fechar').addEventListener('click', () => d.close());
+}
+
+function botaoVerBoleto(entidade, referencia) {
+  return `<button type="button" class="ed-botao ed-botao-secundario ed-botao-pequeno"
+            data-ver-boleto="${esc(entidade)}|${esc(referencia)}">
+    <span class="ed-icone ed-icone-16 i-recibo" aria-hidden="true"></span>Ver boleto</button>`;
+}
+
+function ligarBotoesBoleto(raiz) {
+  (raiz || document).querySelectorAll('[data-ver-boleto]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const [entidade, referencia] = btn.dataset.verBoleto.split('|');
+      abrirBoleto(entidade, referencia);
+    });
+  });
+}
+
 // ── janelas ──────────────────────────────────────────────────────────
 function abrirJanela(id) {
   const d = document.getElementById(id);

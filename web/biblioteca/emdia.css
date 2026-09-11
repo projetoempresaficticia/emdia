@@ -272,6 +272,27 @@ dialog {
   color: var(--ed-texto); box-shadow: var(--ed-sombra-alta);
 }
 dialog::backdrop { background: rgba(0,0,0,.6); }
+.mono { font-family: ui-monospace, 'SF Mono', Consolas, monospace; }
+
+.ed-icone-botao {
+  display: grid; place-items: center; width: 34px; height: 34px; border: 0; border-radius: 50%;
+  background: transparent; color: var(--ed-texto-suave); cursor: pointer;
+}
+.ed-icone-botao:hover { background: var(--ed-superficie); color: var(--ed-texto); }
+
+/* ── boleto (documento real, dentro de um popup) ─────────────────────── */
+dialog.ed-modal-boleto { max-width: 440px; padding: 0; }
+.ed-janela-cabeca {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--ed-e4);
+  padding: var(--ed-e4); border-bottom: 1px solid var(--ed-borda);
+}
+.ed-janela-cabeca h2 { font: 700 17px/1 var(--ed-display); }
+.ed-boleto-corpo { padding: var(--ed-e4); }
+.ed-boleto-linha-digitavel {
+  display: flex; flex-direction: column; margin-top: var(--ed-e4); padding: var(--ed-e3);
+  background: var(--ed-superficie); border: 1px dashed var(--ed-borda); border-radius: var(--ed-r-sm);
+}
+.ed-boleto-linha-digitavel .mono { font-size: 15px; font-weight: 600; letter-spacing: .04em; }
 .ed-msg { font: 500 13.5px/1.4 var(--ed-fonte); min-height: 1px; }
 .ed-msg-erro { color: var(--ed-erro); }
 .ed-msg-ok { color: var(--ed-sucesso); }

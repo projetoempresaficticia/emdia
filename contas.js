@@ -25,6 +25,7 @@ async function renderizar() {
     ? visiveis.map((c) => linhaConta(c, true)).join('')
     : '<p class="ed-vazio">Nenhuma conta aqui.</p>';
   ligarBotoesPagar(elLista, async () => { await carregarContas(true); await renderizar(); });
+  ligarBotoesBoleto(elLista);
 }
 
 elSegmentado.querySelectorAll('button').forEach((btn) => {

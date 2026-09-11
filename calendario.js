@@ -84,6 +84,7 @@ function renderizarDia() {
     renderizarGrelha();
     renderizarDia();
   });
+  ligarBotoesBoleto(elDia);
 }
 
 document.getElementById('mes-anterior').addEventListener('click', () => {
